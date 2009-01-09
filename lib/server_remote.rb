@@ -1,5 +1,3 @@
-# ServerRemote
-
 require 'rubygems'
 require 'yaml'
 require 'simplecli'
@@ -8,9 +6,12 @@ require 'hash_ext'
 module Remote
   module Util
     attr_accessor :config
-    attr_accessor :profile
 
     DEFAULT_PROFILE = 'app'
+    
+    def default_options_path
+      File.dirname(__FILE__) + "/../config/defaults.yml"
+    end
     
     def execute(cmd)
       print "#{cmd}\n"
@@ -42,13 +43,21 @@ module Remote
       cd_to_app_action + ";tail -f log/#{config[:environment]}.log"
     end
     
-    def load_config(config_path, profile = nil)
+    def load_config(config_path)
+      self.config ||= {}
       cfg = YAML.load_file(config_path)
-      self.profile = profile || cfg['default_profile'] || DEFAULT_PROFILE
-      self.config = cfg[self.profile].symbolize_keys
+      self.config[:profile] ||= cfg['default_profile'] || DEFAULT_PROFILE
+      self.config.merge!(cfg[self.profile].symbolize_keys)
     end
-
+    
+    def load_app_config(config_path)
+      load_config(default_options_path)
+      load_config(config_path)
+    end
+    
     def parse_common_args(*args)
+      # -p profile ; add to config as :default_profile
+      
     end
     
 
@@ -66,6 +75,7 @@ module Remote
     end
     
     def console_help
+#      "-e environment"
     end
     
     def console(*args)
@@ -73,7 +83,7 @@ module Remote
     end
     
     def logtail_help
-
+ #     "-e environment"
     end
     
     def logtail(*args)
@@ -82,7 +92,8 @@ module Remote
 
     alias_method :simple_cli_run, :run unless method_defined?(:simple_cli_initialize)
     def run
-      #TODO process common args 
+      #TODO process common args
+      #TODO set default command
       load_config("#{RAILS_ROOT}/config/server_remote.yml")
       simple_cli_run
     end
