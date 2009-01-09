@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'optparse'
 require 'yaml'
 require 'simplecli'
 require 'hash_ext'
@@ -40,32 +41,53 @@ module Remote
     end
 
     def tail_action
-      cd_to_app_action + ";tail -f log/#{config[:environment]}.log"
+      cd_to_app_action + ";tail -n #{config[:tail_initial_lines]} -f log/#{config[:environment]}.log"
+    end
+    
+    def config
+      @config ||= {}
     end
     
     def load_config(config_path)
-      self.config ||= {}
+      load_default_config
+      load_app_config(config_path)
+    end
+    
+    def parse_common_args(args)
+      # -p profile ; add to config as :profile
+      opts = OptionParser.new do |opts|
+        opts.on('-p PROFILE') { |p| config[:profile] = p }
+        opts.on('-e ENVIRONMENT') { |e| config[:environment] = e }
+      end
+      opts.parse!(args)
+    end
+
+    protected
+
+    def load_app_config(config_path)
       cfg = YAML.load_file(config_path)
       self.config[:profile] ||= cfg['default_profile'] || DEFAULT_PROFILE
-      self.config.merge!(cfg[self.profile].symbolize_keys)
+      if cfg[config[:profile]]
+        self.config.merge!(cfg[config[:profile]].symbolize_keys)
+      else
+        raise "No profile '#{config[:profile]}' exists in #{config_path}"
+      end      
     end
     
-    def load_app_config(config_path)
-      load_config(default_options_path)
-      load_config(config_path)
+    def load_default_config
+      self.config.merge!(YAML.load_file(default_options_path).symbolize_keys)
     end
-    
-    def parse_common_args(*args)
-      # -p profile ; add to config as :default_profile
-      
-    end
-    
+
 
   end
     
   class Command
     include SimpleCLI
     include Util
+
+    def usage
+      commands
+    end
     
     def shell_help
     end
@@ -92,8 +114,7 @@ module Remote
 
     alias_method :simple_cli_run, :run unless method_defined?(:simple_cli_initialize)
     def run
-      #TODO process common args
-      #TODO set default command
+      parse_common_args(ARGV)
       load_config("#{RAILS_ROOT}/config/server_remote.yml")
       simple_cli_run
     end
