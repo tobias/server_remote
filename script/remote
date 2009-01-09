@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+#-*-ruby-*-
+require File.dirname(__FILE__) + '/../config/boot'
+$LOAD_PATH.unshift "#{RAILS_ROOT}/vendor/plugins/server_remote/lib"
+require 'server_remote/runner'
+
