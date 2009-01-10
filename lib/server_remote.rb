@@ -9,9 +9,10 @@ module Remote
     attr_accessor :config
 
     DEFAULT_PROFILE = 'app'
+    PLUGIN_ROOT = File.dirname(__FILE__)
     
     def default_options_path
-      File.dirname(__FILE__) + "/../config/defaults.yml"
+      PLUGIN_ROOT + "/../config/defaults.yml"
     end
     
     def execute(cmd)
@@ -84,12 +85,28 @@ module Remote
   class Command
     include SimpleCLI
     include Util
-
+    
+    def usage_help
+      "Summary: prints usage message"
+    end
+    
     def usage
+      puts <<EOH
+Executes commands on a remote server over ssh. Configuration is in:
+#{RAILS_ROOT}/config/server_remote.yml
+
+You can override the profile used with -p profile. The default profile is: #{config[:profile]}
+
+Learn more in the readme:
+#{PLUGIN_ROOT}/README.textile
+
+EOH
+
       commands
     end
     
     def shell_help
+      "Summary: executes remote shell"
     end
     
     def shell(*args)
@@ -97,7 +114,11 @@ module Remote
     end
     
     def console_help
-#      "-e environment"
+      <<EOH
+Summary: executes remote console
+
+ environment can be overridden w/ -e env
+EOH
     end
     
     def console(*args)
@@ -105,7 +126,11 @@ module Remote
     end
     
     def logtail_help
- #     "-e environment"
+      <<EOH
+Summary: executes remote tail -f on the log
+
+environment can be overridden w/ -e env
+EOH
     end
     
     def logtail(*args)

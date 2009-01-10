@@ -1,0 +1,21 @@
+h2. Server Remote
+
+Server Remote provides common rails application server commands over ssh.
+
+Currently, it provides three commands:
+
+* @remote shell@ - same as ssh'ing to the server (this is the default command, so it can be called with just @remote@)
+* @remote console@ - executes a @script/console@ on the server
+* @remote logtail@ - executes @tail -f log/<environment>.log@ on the server
+
+h3. Configuration
+
+Configuration is stored in @config/server_remote.yml@.
+
+profiles
+
+-p -e
+
+simplecli
+
+Copyright (c) 2009 Tobias Crawley, released under the MIT license
