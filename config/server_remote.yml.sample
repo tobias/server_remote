@@ -23,6 +23,12 @@
 # tail_initial_lines: specifies how many lines the 'logtail' command should show
 # initially. Default is 500.
 
+common: &common
+  keyfile: config/server-key.pem
+  host: server.example.com
+
+# Profiles:
+
 app:
   <<: *common
   user: app
@@ -31,6 +37,3 @@ admin:
   <<: *common
   user: admin
 
-common: &common
-  keyfile: config/server-key.pem
-  host: server.example.com

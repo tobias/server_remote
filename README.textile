@@ -16,6 +16,10 @@ The configuration file groups configurations into _profiles_. A profile defines 
 
 The default profile is _app_. This can be changed with the @default_profile:@ setting in the config file, and overridden on any call with the @-p profile@ switch.
 
+h3. Installation
+
+Install with: @script/plugin install git://github.com/tobias/server_remote.git@
+
 This script uses the "simplecli":http://github.com/remi/simplecli gem from Remi Taylor. Install with @gem install remi-simplecli@.
 
 *Note:* this plugin uses the ssh binary, which must be in your path. I have absolutely no idea if it will work on Windows.
