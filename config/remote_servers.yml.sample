@@ -1,0 +1,36 @@
+# Config file for server_remote plugin (http://github.com/tobias/server_remote)
+# Options are grouped into named profiles. 
+
+# The default profile is 'app'. This can be changed here (this is the only
+# top-level configuration option - the rest are within profiles).
+#default_profile: app
+
+# The only required option in a profile is host:. The rest can be pulled from
+# the defaults or inferred by ssh.
+
+# user: Specifies the user to log in as. No default; ssh will assume the 
+# current user.
+
+# keyfile: specifies the path (relative to RAILS_ROOT) to the ssh keyfile. No 
+# default; ssh will ask for a password.
+
+# environment: specifies the rails environment for the app on the server. Applies
+# to the 'console' and 'logtail' commands. Default is 'production'.
+
+# app_path: specifies the path to the app on the server relative to user:'s home 
+# or absolute. Default is '/mnt/app/current/'.
+
+# tail_initial_lines: specifies how many lines the 'logtail' command should show
+# initially. Default is 500.
+
+app:
+  <<: *common
+  user: app
+
+admin:
+  <<: *common
+  user: admin
+
+common: &common
+  keyfile: config/server-key.pem
+  host: server.example.com

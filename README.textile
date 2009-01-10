@@ -12,10 +12,12 @@ h3. Configuration
 
 Configuration is stored in @config/server_remote.yml@. On installation, a sample file is copied to @RAILS_ENV/config/@ (along with @RAILS_ENV/script/remote@). 
 
-The configuration file groups configurations into *profiles*. A profile defines the info needed to connect to a server, along with the path to the app and the environment it is running under. 
+The configuration file groups configurations into _profiles_. A profile defines the info needed to connect to a server, along with the path to the app and the environment it is running under. 
 
-The default profile is *app*. This can be changed with the @default_profile:@ setting in the config file, and overridden on any call with the @-p profile@ switch.
+The default profile is _app_. This can be changed with the @default_profile:@ setting in the config file, and overridden on any call with the @-p profile@ switch.
 
 This script uses the "simplecli":http://github.com/remi/simplecli gem from Remi Taylor. Install with @gem install remi-simplecli@.
+
+*Note:* this plugin uses the ssh binary, which must be in your path. I have absolutely no idea if it will work on Windows.
 
 Copyright (c) 2009 Tobias Crawley, released under the MIT license
