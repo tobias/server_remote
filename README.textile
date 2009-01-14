@@ -14,7 +14,9 @@ Configuration is stored in @config/server_remote.yml@. On installation, a sample
 
 The configuration file groups configurations into _profiles_. A profile defines the info needed to connect to a server, along with the path to the app and the environment it is running under. 
 
-The default profile is _app_. This can be changed with the @default_profile:@ setting in the config file, and overridden on any call with the @-p profile@ switch.
+The default profile is _app_. This can be changed with the @default_profile:@ setting in the config file, and overridden on any call with the @-p profile@ switch. This switch must be the first argument. Example:
+
+@script/remote -p admin console@
 
 h3. Installation
 

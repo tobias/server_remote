@@ -48,19 +48,29 @@ module Remote
     def config
       @config ||= {}
     end
-    
-    def load_config(config_path)
+
+    def config_path
+      options[:config_path] ? options[:config_path] : "#{RAILS_ROOT}/config/server_remote.yml"
+    end
+
+    def load_config
       load_default_config
       load_app_config(config_path)
     end
     
-    def parse_common_args(args)
-      # -p profile ; add to config as :profile
-      opts = OptionParser.new do |opts|
-        opts.on('-p PROFILE') { |p| config[:profile] = p }
-        opts.on('-e ENVIRONMENT') { |e| config[:environment] = e }
+    def parse_common_args
+      if args.shift == '-p'
+        p = args.shift
+        if p
+          config[:profile] = p
+        else
+          raise "Missing profile argument for -p"
+        end
       end
-      opts.parse!(args)
+#       opts = OptionParser.new do |opts|
+#         opts.on('-p PROFILE') { |p| config[:profile] = p }
+#       end
+#       opts.parse!(args)
     end
 
     protected
@@ -114,11 +124,7 @@ EOH
     end
     
     def console_help
-      <<EOH
-Summary: executes remote console
-
- environment can be overridden w/ -e env
-EOH
+      'Summary: executes remote console'
     end
     
     def console(*args)
@@ -126,24 +132,44 @@ EOH
     end
     
     def logtail_help
-      <<EOH
-Summary: executes remote tail -f on the log
-
-environment can be overridden w/ -e env
-EOH
+      'Summary: executes remote tail -f on the log'
     end
     
     def logtail(*args)
       execute "#{ssh_command} '#{tail_action}'"      
     end
 
-    alias_method :simple_cli_run, :run unless method_defined?(:simple_cli_initialize)
-    def run
-      parse_common_args(ARGV)
-      load_config("#{RAILS_ROOT}/config/server_remote.yml")
-      simple_cli_run
+    def cmd_help
+      %{
+Summary: executes an arbitrary command on the server
+
+usage: #{script_name} cmd <command>
+}
     end
 
+    def cmd(*args)
+      if args.empty?
+        cmd_help
+      else
+        execute "#{ssh_command} '#{args.join(' ')}'"
+      end
+    end
+    
+    
+   #  alias_method :simple_cli_parse!, :parse! unless method_defined?(:simple_cli_parse!)
+#     def parse!
+#       parse_common_args(args)
+#       load_config(config_path)
+#       simple_cli_parse!
+   # end
+
+    def self.start(args, options = {})
+      remote = new(args.empty? ? ['--nullarg'] : args, options.merge(:default => 'shell'))
+      remote.parse_common_args
+      remote.load_config
+      remote.parse!
+      remote.run
+    end
 
   end
 

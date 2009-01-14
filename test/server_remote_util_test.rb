@@ -4,29 +4,33 @@ require 'pp'
 
 class ServerRemoteUtilTest < Test::Unit::TestCase
   include Remote::Util
+  attr_accessor :args
+  attr_accessor :options
+
+  def setup
+    self.options = {}
+  end
   
   def test_load_config_should_load_defaults
-    load_config TEST_ROOT + '/config/config_no_override.yml'
+    options[:config_path] = TEST_ROOT + '/config/config_no_override.yml'
+    load_config 
     assert_equal 'app', config[:profile]
     assert_equal 'production', config[:environment]
   end
 
   def test_load_config_should_override_defaults
-    load_config TEST_ROOT + '/config/config_override.yml'
+    options[:config_path] = TEST_ROOT + '/config/config_override.yml'
+    load_config 
     assert_equal 'test', config[:environment]
   end
 
   def test_parse_common_args_should_set_profile
     self.config = {}
-    parse_common_args(%w{-p profile})
+    self.args =  %w{-p profile}
+    parse_common_args
     assert_equal 'profile', config[:profile]
   end
   
-  def test_parse_common_args_should_set_profile
-    self.config = {}
-    parse_common_args(%w{-e env})
-    assert_equal 'env', config[:environment]
-  end
   
   def test_user_and_host
     self.config = {:host => 'host'}
