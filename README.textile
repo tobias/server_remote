@@ -2,7 +2,7 @@ h2. Server Remote
 
 Server Remote provides common rails application server commands over ssh.
 
-Currently, it provides three commands:
+Currently, it provides the following commands:
 
 * @remote shell@ - same as ssh'ing to the server (this is the default command, so it can be called with just @remote@)
 * @remote console@ - executes a @script/console@ on the server
