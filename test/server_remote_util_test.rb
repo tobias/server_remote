@@ -47,6 +47,15 @@ class ServerRemoteUtilTest < Test::Unit::TestCase
     self.config[:keyfile] = 'kf'
     assert_equal '-i kf ', keyfile_option
   end
+  
+  def test_remote_command
+    self.config = {:host => 'host'}
+    assert_equal "ssh -t host 'cmd'", remote_command(%w{cmd})
+  end
 
+  def test_remote_command_in_app
+    self.config = {:host => 'host', :app_path => 'path'}
+    assert_equal "ssh -t host 'cd path;cmd'", remote_command_in_app(%w{cmd})
+  end
   
 end

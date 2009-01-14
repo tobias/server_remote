@@ -34,7 +34,7 @@ module Remote
     end
 
     def console_action
-      cd_to_app_action + ";./script/console #{config[:environment]}"
+      "./script/console #{config[:environment]}"
     end
 
     def cd_to_app_action
@@ -42,7 +42,17 @@ module Remote
     end
 
     def tail_action
-      cd_to_app_action + ";tail -n #{config[:tail_initial_lines]} -f log/#{config[:environment]}.log"
+      "tail -n #{config[:tail_initial_lines]} -f log/#{config[:environment]}.log"
+    end
+
+    def remote_command(args)
+      args = args.join(' ') if args.respond_to?(:join)
+      "#{ssh_command} '#{args}'"
+    end
+
+    def remote_command_in_app(args)
+      args = args.join(' ') if args.respond_to?(:join)
+      remote_command("#{cd_to_app_action};#{args}")
     end
     
     def config
@@ -59,7 +69,8 @@ module Remote
     end
     
     def parse_common_args
-      if args.shift == '-p'
+      if args.first == '-p'
+        args.shift
         p = args.shift
         if p
           config[:profile] = p
@@ -67,6 +78,11 @@ module Remote
           raise "Missing profile argument for -p"
         end
       end
+      
+      # get around simplecli's usage call when there are no arguments
+      # instead of calling the default action
+      args << '--nullarg' if args.empty?
+      
 #       opts = OptionParser.new do |opts|
 #         opts.on('-p PROFILE') { |p| config[:profile] = p }
 #       end
@@ -128,7 +144,7 @@ EOH
     end
     
     def console(*args)
-      execute "#{ssh_command} '#{console_action}'"
+      execute remote_command_in_app(console_action)
     end
     
     def logtail_help
@@ -136,7 +152,7 @@ EOH
     end
     
     def logtail(*args)
-      execute "#{ssh_command} '#{tail_action}'"      
+      execute remote_command_in_app(tail_action)
     end
 
     def cmd_help
@@ -151,9 +167,26 @@ usage: #{script_name} cmd <command>
       if args.empty?
         cmd_help
       else
-        execute "#{ssh_command} '#{args.join(' ')}'"
+        execute remote_command(args)
       end
     end
+    
+    def cmd_in_app_help
+      %{
+Summary: executes an arbitrary command on the server after a cd to the app path
+
+usage: #{script_name} cmd_in_app <command>
+}
+    end
+
+    def cmd_in_app(*args)
+      if args.empty?
+        cmd_in_app_help
+      else
+        execute remote_command_in_app(args)
+      end
+    end
+
     
     
    #  alias_method :simple_cli_parse!, :parse! unless method_defined?(:simple_cli_parse!)
@@ -164,7 +197,7 @@ usage: #{script_name} cmd <command>
    # end
 
     def self.start(args, options = {})
-      remote = new(args.empty? ? ['--nullarg'] : args, options.merge(:default => 'shell'))
+      remote = new(args, options.merge(:default => 'shell'))
       remote.parse_common_args
       remote.load_config
       remote.parse!

@@ -37,5 +37,16 @@ class ServerRemoteTest < Test::Unit::TestCase
     assert_equal "ssh -t test 'ls -p'", run_cmd(%w{cmd ls -p})
     assert_equal "ssh -t test 'ls'", run_cmd(%w{-p app cmd ls})
   end
+  
+  def test_cmd_in_app_action
+    assert_match /^Summary:/, run_cmd(%w{cmd_in_app})
+    assert_equal "ssh -t test 'cd /mnt/app/current;ls'", run_cmd(%w{cmd_in_app ls})
+#     assert_equal "ssh -t test 'ls -p'", run_cmd(%w{cmd ls -p})
+#     assert_equal "ssh -t test 'ls'", run_cmd(%w{-p app cmd ls})
+  end
     
+  def test_scp_action
+#    assert_match /^Summary:/, run_cmd(%w{scp})
+  end
+  
 end
