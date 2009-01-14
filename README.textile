@@ -7,7 +7,8 @@ Currently, it provides three commands:
 * @remote shell@ - same as ssh'ing to the server (this is the default command, so it can be called with just @remote@)
 * @remote console@ - executes a @script/console@ on the server
 * @remote logtail@ - executes @tail -f log/<environment>.log@ on the server
-
+* @remote cmd <some command>@ executes command on the server, displaying the result
+* @remote cmd_in_app <some command>@ works just like cmd, but cds to app dir first
 h3. Configuration
 
 Configuration is stored in @config/server_remote.yml@. On installation, a sample file is copied to @RAILS_ENV/config/@ (along with @RAILS_ENV/script/remote@). 
