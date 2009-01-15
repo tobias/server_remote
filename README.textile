@@ -9,6 +9,8 @@ Currently, it provides the following commands:
 * @remote logtail@ - executes @tail -f log/<environment>.log@ on the server
 * @remote cmd <some command>@ executes command on the server, displaying the result
 * @remote cmd_in_app <some command>@ works just like cmd, but cds to app dir first
+* @remote scp <local_file> :<remote_file>@ provides scp. Prefix remote files with ':'
+
 h3. Configuration
 
 Configuration is stored in @config/server_remote.yml@. On installation, a sample file is copied to @RAILS_ENV/config/@ (along with @RAILS_ENV/script/remote@). 
