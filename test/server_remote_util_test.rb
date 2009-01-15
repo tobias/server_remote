@@ -37,7 +37,7 @@ class ServerRemoteUtilTest < Test::Unit::TestCase
     assert_equal 'host', user_and_host
 
     self.config[:user] = 'user'
-    assert_equal '-l user host', user_and_host
+    assert_equal 'user@host', user_and_host
   end
   
   def test_keyfile_option
@@ -57,5 +57,18 @@ class ServerRemoteUtilTest < Test::Unit::TestCase
     self.config = {:host => 'host', :app_path => 'path'}
     assert_equal "ssh -t host 'cd path;cmd'", remote_command_in_app(%w{cmd})
   end
+
+  def test_scp_command
+    self.config = {}
+    assert_equal 'scp ', scp_command
+    self.config[:keyfile] = 'kf'
+    assert_equal 'scp -i kf ', scp_command
+  end
   
+  def test_scp_file_argument
+    self.config = {:host => 'host'}
+    assert_equal 'test', scp_file_argument('test')
+    assert_equal 'host:test', scp_file_argument(':test')
+  end
+    
 end
