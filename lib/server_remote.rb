@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'optparse'
 require 'yaml'
 require 'simplecli'
 require 'hash_ext'
@@ -21,7 +20,7 @@ module Remote
     end
 
     def user_and_host
-      user = "-l #{config[:user]} " if config[:user]
+      user = "#{config[:user]}@" if config[:user]
       "#{user}#{config[:host]}"
     end
 
@@ -32,7 +31,19 @@ module Remote
     def ssh_command
       "ssh -t #{keyfile_option}#{user_and_host}"
     end
+    
+    def scp_command
+      "scp #{keyfile_option}"
+    end
 
+    def scp_file_argument(arg)
+      if arg and arg[0..0] == ':'
+        user_and_host + arg
+      else
+        arg
+      end
+    end
+    
     def console_action
       "./script/console #{config[:environment]}"
     end
@@ -82,11 +93,6 @@ module Remote
       # get around simplecli's usage call when there are no arguments
       # instead of calling the default action
       args << '--nullarg' if args.empty?
-      
-#       opts = OptionParser.new do |opts|
-#         opts.on('-p PROFILE') { |p| config[:profile] = p }
-#       end
-#       opts.parse!(args)
     end
 
     protected
@@ -186,16 +192,31 @@ usage: #{script_name} cmd_in_app <command>
         execute remote_command_in_app(args)
       end
     end
+    
+    def scp_help
+       %{
+Summary: copies files over scp (prefix remote files with ':')
 
+usage: #{script_name} scp <file1> <file2>
+
+Example:
+
+#{script_name} scp /local/file :/remote/file executes:
+scp /local/file user@host:/remote/file
+
+Any non colon prefixed arguments will be passed to scp.
+}
+    end
+    
+    def scp(*args)
+      if args.empty?
+        scp_help
+      else
+        execute scp_command + args.collect { |f| scp_file_argument(f) }.join(' ')
+      end
+    end
     
     
-   #  alias_method :simple_cli_parse!, :parse! unless method_defined?(:simple_cli_parse!)
-#     def parse!
-#       parse_common_args(args)
-#       load_config(config_path)
-#       simple_cli_parse!
-   # end
-
     def self.start(args, options = {})
       remote = new(args, options.merge(:default => 'shell'))
       remote.parse_common_args

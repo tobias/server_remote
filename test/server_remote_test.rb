@@ -47,8 +47,8 @@ class ServerRemoteTest < Test::Unit::TestCase
     
   def test_scp_action
     assert_match /^Summary:/, run_cmd(%w{scp})
-    assert_equal "scp test:/remote/file /local/file", run_cmd(%{scp :/remote/file /local/file})
-    assert_equal "scp test:/remote/file /local/file", run_cmd(%{scp :/remote/file /local/file})
+    assert_equal "scp test:/remote/file /local/file", run_cmd(%w{scp :/remote/file /local/file})
+    assert_equal "scp test:/remote/file test:/local/file", run_cmd(%w{scp :/remote/file :/local/file})
   end
   
 end
