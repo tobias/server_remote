@@ -163,7 +163,7 @@ EOH
 
     def cmd_help
       %{
-Summary: executes an arbitrary command on the server
+Summary: executes an arbitrary command on the server after a cd to the app path
 
 usage: #{script_name} cmd <command>
 }
@@ -172,22 +172,6 @@ usage: #{script_name} cmd <command>
     def cmd(*args)
       if args.empty?
         cmd_help
-      else
-        execute remote_command(args)
-      end
-    end
-    
-    def cmd_in_app_help
-      %{
-Summary: executes an arbitrary command on the server after a cd to the app path
-
-usage: #{script_name} cmd_in_app <command>
-}
-    end
-
-    def cmd_in_app(*args)
-      if args.empty?
-        cmd_in_app_help
       else
         execute remote_command_in_app(args)
       end
