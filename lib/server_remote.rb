@@ -11,11 +11,11 @@ module Remote
     PLUGIN_ROOT = File.dirname(__FILE__)
     
     def default_options_path
-      PLUGIN_ROOT + "/../config/defaults.yml"
+      File.join(*([PLUGIN_ROOT] + %w{.. config defaults.yml}))
     end
     
     def execute(cmd)
-      print "#{cmd}\n"
+      print "--> calling '#{cmd}'\n"
       Kernel.system(cmd)
     end
 
@@ -25,7 +25,7 @@ module Remote
     end
 
     def keyfile_option
-      "-i #{config[:keyfile]} " if config[:keyfile]
+      "-i #{File.join(RAILS_ROOT, config[:keyfile])} " if config[:keyfile]
     end
     
     def ssh_command
@@ -71,7 +71,7 @@ module Remote
     end
 
     def config_path
-      options[:config_path] ? options[:config_path] : "#{RAILS_ROOT}/config/server_remote.yml"
+      options[:config_path] ? options[:config_path] : File.join(RAILS_ROOT, 'config', 'server_remote.yml')
     end
 
     def load_config
@@ -125,12 +125,12 @@ module Remote
     def usage
       puts <<EOH
 Executes commands on a remote server over ssh. Configuration is in:
-#{RAILS_ROOT}/config/server_remote.yml
+#{File.join(RAILS_ROOT, 'config', 'server_remote.yml')}
 
 You can override the profile used with -p profile. The default profile is: #{config[:profile]}
 
 Learn more in the readme:
-#{PLUGIN_ROOT}/README.textile
+#{File.join(PLUGIN_ROOT, 'README.textile')}
 
 EOH
 

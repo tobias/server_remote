@@ -45,7 +45,7 @@ class ServerRemoteUtilTest < Test::Unit::TestCase
     assert_nil keyfile_option
 
     self.config[:keyfile] = 'kf'
-    assert_equal '-i kf ', keyfile_option
+    assert_equal '-i blah/kf ', keyfile_option
   end
   
   def test_remote_command
@@ -62,7 +62,7 @@ class ServerRemoteUtilTest < Test::Unit::TestCase
     self.config = {}
     assert_equal 'scp ', scp_command
     self.config[:keyfile] = 'kf'
-    assert_equal 'scp -i kf ', scp_command
+    assert_equal 'scp -i blah/kf ', scp_command
   end
   
   def test_scp_file_argument
