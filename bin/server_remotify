@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'server_remote'
+
+if ARGV[0]
+  ServerRemote::InstallTools.install(ARGV[0])
+else
+  $stderr.puts "Usage: #{$0} path_to_app"
+end

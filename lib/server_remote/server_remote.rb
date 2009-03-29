@@ -4,10 +4,12 @@ require 'simplecli'
 require 'hash_ext'
 
 module ServerRemote
+  GEM_ROOT = File.join(File.dirname(__FILE__), '..', '..')
+  
   module Util
 
     DEFAULT_PROFILE = 'app'
-    GEM_ROOT = File.join(File.dirname(__FILE__), '..', '..')
+
     
     def default_options_path
       File.join(*([GEM_ROOT] + %w{config defaults.yml}))

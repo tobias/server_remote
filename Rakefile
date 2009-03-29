@@ -10,6 +10,8 @@ begin
     gem.homepage = "http://github.com/tobias/server_remote"
     gem.authors = ["tobias"]
     gem.files = FileList["[A-Z]*.*", "{bin,config,generators,lib,test,spec,script}/**/*"]
+    gem.executables = %w{server_remotify}
+    
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError

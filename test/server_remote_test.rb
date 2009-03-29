@@ -6,7 +6,6 @@ class ServerRemoteTest < Test::Unit::TestCase
       cmd
     end
 
-    RAILS_ROOT = 'blah'
   end
 
 
