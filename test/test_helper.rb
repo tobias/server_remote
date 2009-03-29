@@ -1,10 +1,13 @@
 require 'rubygems'
-require 'active_support'
-require 'active_support/test_case'
 require 'test/unit'
+require 'shoulda'
 
-TEST_ROOT = File.dirname(__FILE__) unless defined?(TEST_ROOT)
-$LOAD_PATH.unshift "#{TEST_ROOT}/../lib" 
+TEST_ROOT = File.dirname(__FILE__)
 
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'server_remote'
 
+class Test::Unit::TestCase
+
+end

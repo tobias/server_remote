@@ -1,10 +1,7 @@
-require File.dirname(__FILE__) + '/test_helper'
-
-require 'pp'
+require 'test_helper'
 
 class ServerRemoteTest < Test::Unit::TestCase
-  
-  module Remote::Util
+  module ServerRemote::Util
     def execute(cmd)
       cmd
     end
@@ -14,7 +11,7 @@ class ServerRemoteTest < Test::Unit::TestCase
 
 
   def run_cmd(args = [])
-    Remote::Command.start(args, :config_path => TEST_ROOT + '/config/config_no_override.yml')
+    ServerRemote::Command.start(TEST_ROOT, args, :config_path => TEST_ROOT + '/config/config_no_override.yml')
   end
 
 
@@ -43,5 +40,5 @@ class ServerRemoteTest < Test::Unit::TestCase
     assert_equal "scp test:/remote/file /local/file", run_cmd(%w{scp :/remote/file /local/file})
     assert_equal "scp test:/remote/file test:/local/file", run_cmd(%w{scp :/remote/file :/local/file})
   end
-  
+
 end

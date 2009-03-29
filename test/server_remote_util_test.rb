@@ -1,14 +1,15 @@
-require File.dirname(__FILE__) + '/test_helper'
+require 'test_helper'
 
 require 'pp'
 
 class ServerRemoteUtilTest < Test::Unit::TestCase
-  include Remote::Util
+  include ServerRemote::Util
   attr_accessor :args
   attr_accessor :options
 
   def setup
     self.options = {}
+    self.app_root = TEST_ROOT
   end
   
   def test_load_config_should_load_defaults
@@ -45,7 +46,7 @@ class ServerRemoteUtilTest < Test::Unit::TestCase
     assert_nil keyfile_option
 
     self.config[:keyfile] = 'kf'
-    assert_equal '-i blah/kf ', keyfile_option
+    assert_equal "-i #{File.join(TEST_ROOT, 'kf')} ", keyfile_option
   end
   
   def test_remote_command
@@ -62,7 +63,7 @@ class ServerRemoteUtilTest < Test::Unit::TestCase
     self.config = {}
     assert_equal 'scp ', scp_command
     self.config[:keyfile] = 'kf'
-    assert_equal 'scp -i blah/kf ', scp_command
+    assert_equal "scp -i #{File.join(TEST_ROOT, 'kf')} ", scp_command
   end
   
   def test_scp_file_argument
