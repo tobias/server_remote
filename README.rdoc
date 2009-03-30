@@ -1,7 +1,0 @@
-= server_remote
-
-Description goes here.
-
-== Copyright
-
-Copyright (c) 2009 tobias. See LICENSE for details.

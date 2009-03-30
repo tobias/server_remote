@@ -5,14 +5,14 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "server_remote"
-    gem.summary = %Q{TODO}
+    gem.summary = %Q{A gem that provides script/remote to a project for executing remote commands.}
     gem.email = "tcrawley@gmail.com"
     gem.homepage = "http://github.com/tobias/server_remote"
-    gem.authors = ["tobias"]
+    gem.authors = ["Tobias Crawley"]
     gem.files = FileList["[A-Z]*.*", "{bin,config,generators,lib,test,spec,script}/**/*"]
     gem.executables = %w{server_remotify}
-    
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency('remi-simplecli', '>= 0.1.5')
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 For additional settings
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"

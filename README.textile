@@ -1,32 +1,48 @@
 h2. Server Remote
 
-Server Remote provides common rails application server commands over ssh.
+Server Remote is a gem that provides common application server
+commands over ssh via a script in @script/@ called @remote@.
 
 Currently, it provides the following commands:
 
 * @remote shell@ - same as ssh'ing to the server (this is the default command, so it can be called with just @remote@)
 * @remote console@ - executes a @script/console@ on the server
 * @remote logtail@ - executes @tail -f log/<environment>.log@ on the server
-* @remote cmd <some command>@ executes command on the server, displaying the result
-* @remote cmd_in_app <some command>@ works just like cmd, but cds to app dir first
+* @remote cmd <some command>@ executes command on the server, displaying the result. It @cd@'s to the remote app root first.
 * @remote scp <local_file> :<remote_file>@ provides scp. Prefix remote files with ':'
 
 h3. Configuration
 
-Configuration is stored in @config/server_remote.yml@. On installation, a sample file is copied to @RAILS_ENV/config/@ (along with @RAILS_ENV/script/remote@). 
+Configuration is stored in @config/server_remote.yml@. On
+installation, a sample file is copied to @APP_ROOT/config/@ (along
+with @>APP_ROOT/script/remote@).  
 
-The configuration file groups configurations into _profiles_. A profile defines the info needed to connect to a server, along with the path to the app and the environment it is running under. 
+The configuration file groups configurations into _profiles_. A
+profile defines the info needed to connect to a server, along with the
+path to the app and the environment it is running under.  
 
-The default profile is _app_. This can be changed with the @default_profile:@ setting in the config file, and overridden on any call with the @-p profile@ switch. This switch must be the first argument. Example:
+The default profile is _app_. This can be changed with the
+@default_profile:@ setting in the config file, and overridden on any
+call with the @-p profile@ switch. This switch must be the first
+argument. Example: 
 
 @script/remote -p admin console@
 
 h3. Installation
 
-Install with: @script/plugin install git://github.com/tobias/server_remote.git@
+First, install the gem:
 
-This script uses the "simplecli":http://github.com/remi/simplecli gem from Remi Taylor. Install with @gem install remi-simplecli@.
+@gem install tobias-server_remote --source http://gems.github.com@
 
-*Note:* this plugin uses the ssh binary, which must be in your path. I have absolutely no idea if it will work on Windows.
+Second, use @server_remotify@ command to create the config and script
+file in your project:
 
+@server_remotify path_to_app@
+
+If either of the @config/@ or @script/@ dirs do not exist, they will
+be created for you.
+
+*Note:* this plugin uses the ssh and scp binaries, which must be in
+ your path. I have absolutely no idea if it will work on Windows. 
+ 
 Copyright (c) 2009 Tobias Crawley, released under the MIT license
