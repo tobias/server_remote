@@ -1,7 +1,6 @@
 h2. Server Remote
 
-Server Remote is a gem that provides common application server
-commands over ssh via a script in @script/@ called @remote@.
+Server Remote is a gem that provides common application server commands over ssh via a script in @script/@ called @remote@.
 
 Currently, it provides the following commands:
 
@@ -13,18 +12,11 @@ Currently, it provides the following commands:
 
 h3. Configuration
 
-Configuration is stored in @config/server_remote.yml@. On
-installation, a sample file is copied to @APP_ROOT/config/@ (along
-with @>APP_ROOT/script/remote@).  
+Configuration is stored in @config/server_remote.yml@. On installation, a sample file is copied to @APP_ROOT/config/@ (along with @>APP_ROOT/script/remote@).  
 
-The configuration file groups configurations into _profiles_. A
-profile defines the info needed to connect to a server, along with the
-path to the app and the environment it is running under.  
+The configuration file groups configurations into _profiles_. A profile defines the info needed to connect to a server, along with the path to the app and the environment it is running under.  
 
-The default profile is _app_. This can be changed with the
-@default_profile:@ setting in the config file, and overridden on any
-call with the @-p profile@ switch. This switch must be the first
-argument. Example: 
+The default profile is _app_. This can be changed with the @default_profile:@ setting in the config file, and overridden on any call with the @-p profile@ switch. This switch must be the first argument. Example: 
 
 @script/remote -p admin console@
 
@@ -34,15 +26,12 @@ First, install the gem:
 
 @gem install tobias-server_remote --source http://gems.github.com@
 
-Second, use @server_remotify@ command to create the config and script
-file in your project:
+Second, use @server_remotify@ command to create the config and script file in your project:
 
 @server_remotify path_to_app@
 
-If either of the @config/@ or @script/@ dirs do not exist, they will
-be created for you.
+If either of the @config/@ or @script/@ dirs do not exist, they will be created for you.
 
-*Note:* this plugin uses the ssh and scp binaries, which must be in
- your path. I have absolutely no idea if it will work on Windows. 
+*Note:* this plugin uses the ssh and scp binaries, which must be in your path. I have absolutely no idea if it will work on Windows. 
  
 Copyright (c) 2009 Tobias Crawley, released under the MIT license
