@@ -12,7 +12,7 @@ Currently, it provides the following commands:
 
 h3. Configuration
 
-Configuration is stored in @config/server_remote.yml@. On installation, a sample file is copied to @APP_ROOT/config/@ (along with @>APP_ROOT/script/remote@).  
+Configuration is stored in @config/server_remote.yml@. On installation, a sample file is copied to @APP_ROOT/config/@ (along with @APP_ROOT/script/remote@).  
 
 The configuration file groups configurations into _profiles_. A profile defines the info needed to connect to a server, along with the path to the app and the environment it is running under.  
 
