@@ -26,7 +26,11 @@ class ServerRemoteTest < Test::Unit::TestCase
   def test_logtail_action
     assert_equal "ssh -t test 'cd /mnt/app/current;tail -n 500 -f log/production.log'", run_cmd(%w{logtail})
   end
-
+  
+  def test_logtail_action_with_other_log
+    assert_equal "ssh -t test 'cd /mnt/app/current;tail -n 500 -f blah'", run_cmd(%w{logtail blah})
+  end
+  
   def test_cmd_action
     assert_match /^Summary:/, run_cmd(%w{cmd})
     assert_equal "ssh -t test 'cd /mnt/app/current;ls'", run_cmd(%w{cmd ls})

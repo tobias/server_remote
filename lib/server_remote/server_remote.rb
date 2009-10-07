@@ -53,8 +53,14 @@ module ServerRemote
       "cd #{config[:app_path]}"
     end
 
-    def tail_action
-      "tail -n #{config[:tail_initial_lines]} -f log/#{config[:environment]}.log"
+    def tail_action(args)
+      if args and !args.empty?
+        file = args.join(' ')
+      else
+        file = "log/#{config[:environment]}.log"
+      end
+
+      "tail -n #{config[:tail_initial_lines]} -f #{file}"
     end
 
     def remote_command(args)
@@ -172,7 +178,7 @@ EOH
     end
     
     def logtail(*args)
-      execute remote_command_in_app(tail_action)
+      execute remote_command_in_app(tail_action(args))
     end
 
     def cmd_help
