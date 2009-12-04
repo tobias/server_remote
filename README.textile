@@ -23,9 +23,9 @@ The default profile is _app_. This can be changed with the @default_profile:@ se
 
 h3. Installation
 
-First, install the gem:
+First, install the gem (from "Gemcutter":http://gemcutter.org/):
 
-@gem install tobias-server_remote --source http://gems.github.com@
+@gem install server_remote
 
 Second, use @server_remotify@ command to create the config and script file in your project:
 

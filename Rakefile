@@ -14,6 +14,8 @@ begin
     gem.add_dependency('remi-simplecli', '>= 0.1.5')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 For additional settings
   end
+  Jeweler::GemcutterTasks.new
+
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
