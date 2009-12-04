@@ -25,7 +25,7 @@ h3. Installation
 
 First, install the gem (from "Gemcutter":http://gemcutter.org/):
 
-@gem install server_remote
+@gem install server_remote@
 
 Second, use @server_remotify@ command to create the config and script file in your project:
 
