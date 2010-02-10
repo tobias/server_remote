@@ -11,7 +11,7 @@ begin
     gem.authors = ["Tobias Crawley"]
     gem.files = FileList["[A-Z]*.*", "{bin,config,generators,lib,test,spec,script}/**/*"]
     gem.executables = %w{server_remotify}
-    gem.add_dependency('remi-simplecli', '>= 0.1.5')
+    gem.add_dependency('simplecli', '>= 0.1.5')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 For additional settings
   end
   Jeweler::GemcutterTasks.new
